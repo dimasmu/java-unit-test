@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.*;
 
+import java.util.Properties;
+
 public class ConditionTest {
 
     @Test
@@ -40,5 +42,27 @@ public class ConditionTest {
     @DisabledForJreRange(min = JRE.JAVA_8, max = JRE.JAVA_11)
     void testDisabledRange() {
 
+    }
+
+    @Test
+    @EnabledIfSystemProperties({
+            @EnabledIfSystemProperty(named = "java.vm.specification.vendor", matches = "Oracle Corporation")
+    })
+    void testEnabledSystemProperties() {
+        Properties properties = System.getProperties();
+        properties.forEach((key, value) -> {
+            System.out.println(key + ": " + value);
+        });
+    }
+
+    @Test
+    @DisabledIfSystemProperties({
+            @DisabledIfSystemProperty(named = "java.vm.specification.vendor", matches = "Oracle Corporation")
+    })
+    void testDisabledSystemProperties() {
+        Properties properties = System.getProperties();
+        properties.forEach((key, value) -> {
+            System.out.println(key + ": " + value);
+        });
     }
 }
